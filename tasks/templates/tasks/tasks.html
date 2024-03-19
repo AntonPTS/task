@@ -1,0 +1,28 @@
+{% extends "tasks/base.html" %}
+{% block content %}
+  <p>Tasks  -  <a href="{% url 'tasks:new_task' %}">Add a new task:</a></p>
+  <ul>
+    {% for task in tasks %}
+      <li style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
+        <b><a href="{% url 'tasks:task' task.id %}" style="font-size: 20px;">{{ task.title }}</a></b>
+        <form method="post">
+          {% csrf_token %}
+          <label>Start Date:</label>
+          <input type="date" id="start_date{{ task.id }}" value="{{ task.start_date|date:'Y-m-d' }}" readonly>
+          <label>End Date:</label>
+          <input type="date" id="end_date{{ task.id }}" value="{{ task.end_date|date:'Y-m-d' }}" readonly>
+          <br>
+          <label>Priority:</label>
+          <i>{{ task.get_priority_display }}</i>
+          <br>
+          <input type="checkbox" id="completed{{ task.id }}" {% if task.completed %}checked{% endif %} disabled>
+          <label>Completed</label>
+          <input type="hidden" value="{{ task.id }}">
+        </form>
+      </li>
+    {% empty %}
+      <li>No tasks ¯\_(ツ)_/¯</li>
+    {% endfor %}
+  </ul>
+
+{% endblock content %}
