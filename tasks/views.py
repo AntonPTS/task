@@ -56,7 +56,7 @@ def new_task(request):
         form = TaskForm(data=request.POST)
         if form.is_valid():
             new_task = form.save(commit=False)
-            new_task.user = request.user
+            new_task.owner = request.user
             new_task.save()
             return redirect('tasks:tasks')
     # Вывести пустую или недействительную форму.
